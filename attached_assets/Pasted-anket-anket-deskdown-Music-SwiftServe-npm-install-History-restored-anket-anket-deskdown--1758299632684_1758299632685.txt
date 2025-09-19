@@ -1,0 +1,130 @@
+anket@anket-deskdown:~/Music/SwiftServe$ npm install
+⠼
+ *  History restored 
+
+anket@anket-deskdown:~/Music/SwiftServe$ npm run dev
+
+> rest-express@1.0.0 dev
+> NODE_ENV=development tsx server/index.ts
+
+sh: 1: tsx: not found
+anket@anket-deskdown:~/Music/SwiftServe$ npm install firebase
+⠙
+ *  History restored 
+
+anket@anket-deskdown:~/Music/SwiftServe$ npm run dev
+
+> rest-express@1.0.0 dev
+> NODE_ENV=development tsx server/index.ts
+
+sh: 1: tsx: not found
+anket@anket-deskdown:~/Music/SwiftServe$ npm install
+npm error code ENOTEMPTY
+npm error syscall rename
+npm error path /home/anket/Music/SwiftServe/node_modules/body-parser
+npm error dest /home/anket/Music/SwiftServe/node_modules/.body-parser-SS1R6PuZ
+npm error errno -39
+npm error ENOTEMPTY: directory not empty, rename '/home/anket/Music/SwiftServe/node_modules/body-parser' -> '/home/anket/Music/SwiftServe/node_modules/.body-parser-SS1R6PuZ'
+npm error A complete log of this run can be found in: /home/anket/.npm/_logs/2025-09-19T16_17_06_303Z-debug-0.log
+anket@anket-deskdown:~/Music/SwiftServe$ ^C
+anket@anket-deskdown:~/Music/SwiftServe$ npm install -D tsx typescript @types/node
+npm error code CERT_HAS_EXPIRED
+npm error errno CERT_HAS_EXPIRED
+npm error request to https://registry.npmjs.org/tsx failed, reason: certificate has expired
+npm error A complete log of this run can be found in: /home/anket/.npm/_logs/2025-09-19T16_19_10_387Z-debug-0.log
+anket@anket-deskdown:~/Music/SwiftServe$ ^C
+anket@anket-deskdown:~/Music/SwiftServe$ sudo apt update
+sudo apt install --reinstall ca-certificates
+sudo update-ca-certificates
+[sudo] password for anket:     
+Get:1 http://phc.prontonetworks.com/redirect.html?URI=http://packages.linuxmint.com zara InRelease [331 B]
+Err:1 http://phc.prontonetworks.com/redirect.html?URI=http://packages.linuxmint.com zara InRelease
+  Clearsigned file isn't valid, got 'NOSPLIT' (does the network require authentication?)
+Get:2 http://phc.prontonetworks.com/redirect.html?URI=http://security.ubuntu.com/ubuntu noble-security InRelease [331 B]
+Err:2 http://phc.prontonetworks.com/redirect.html?URI=http://security.ubuntu.com/ubuntu noble-security InRelease
+  Clearsigned file isn't valid, got 'NOSPLIT' (does the network require authentication?)
+Get:3 http://phc.prontonetworks.com/redirect.html?URI=http://archive.ubuntu.com/ubuntu noble InRelease [331 B]
+Err:3 http://phc.prontonetworks.com/redirect.html?URI=http://archive.ubuntu.com/ubuntu noble InRelease
+  Clearsigned file isn't valid, got 'NOSPLIT' (does the network require authentication?)
+Get:4 http://phc.prontonetworks.com/redirect.html?URI=http://archive.ubuntu.com/ubuntu noble-updates InRelease [331 B]
+Err:4 http://phc.prontonetworks.com/redirect.html?URI=http://archive.ubuntu.com/ubuntu noble-updates InRelease
+  Clearsigned file isn't valid, got 'NOSPLIT' (does the network require authentication?)
+Get:5 http://phc.prontonetworks.com/redirect.html?URI=http://archive.ubuntu.com/ubuntu noble-backports InRelease [331 B]
+Err:5 http://phc.prontonetworks.com/redirect.html?URI=http://archive.ubuntu.com/ubuntu noble-backports InRelease
+  Clearsigned file isn't valid, got 'NOSPLIT' (does the network require authentication?)
+Ign:6 https://dl.google.com/linux/chrome/deb stable InRelease                         
+Ign:7 https://packages.microsoft.com/repos/code stable InRelease                      
+Ign:6 https://dl.google.com/linux/chrome/deb stable InRelease                         
+Ign:7 https://packages.microsoft.com/repos/code stable InRelease                      
+Ign:8 https://deb.nodesource.com/node_20.x nodistro InRelease                         
+Ign:8 https://deb.nodesource.com/node_20.x nodistro InRelease                         
+Ign:6 https://dl.google.com/linux/chrome/deb stable InRelease                         
+Ign:7 https://packages.microsoft.com/repos/code stable InRelease                      
+Ign:8 https://deb.nodesource.com/node_20.x nodistro InRelease
+Err:6 https://dl.google.com/linux/chrome/deb stable InRelease
+  Certificate verification failed: The certificate is NOT trusted. The certificate chain uses expired certificate. The name in the certificate does not match the expected.  Could not handshake: Error in the certificate verification. [IP: 142.250.183.174 443]
+Err:7 https://packages.microsoft.com/repos/code stable InRelease
+  Certificate verification failed: The certificate is NOT trusted. The certificate chain uses expired certificate. The name in the certificate does not match the expected.  Could not handshake: Error in the certificate verification. [IP: 13.107.246.58 443]
+Err:8 https://deb.nodesource.com/node_20.x nodistro InRelease
+  Certificate verification failed: The certificate is NOT trusted. The certificate chain uses expired certificate. The name in the certificate does not match the expected.  Could not handshake: Error in the certificate verification. [IP: 104.20.45.190 443]
+Reading package lists... Done
+N: See apt-secure(8) manpage for repository creation and user configuration details.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+E: The repository 'http://packages.linuxmint.com zara InRelease' is no longer signed.
+E: Failed to fetch http://packages.linuxmint.com/dists/zara/InRelease  Clearsigned file isn't valid, got 'NOSPLIT' (does the network require authentication?)
+N: See apt-secure(8) manpage for repository creation and user configuration details.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+E: The repository 'http://security.ubuntu.com/ubuntu noble-security InRelease' is no longer signed.
+E: Failed to fetch http://security.ubuntu.com/ubuntu/dists/noble-security/InRelease  Clearsigned file isn't valid, got 'NOSPLIT' (does the network require authentication?)
+N: See apt-secure(8) manpage for repository creation and user configuration details.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+E: The repository 'http://archive.ubuntu.com/ubuntu noble InRelease' is no longer signed.
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/noble/InRelease  Clearsigned file isn't valid, got 'NOSPLIT' (does the network require authentication?)
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/noble-updates/InRelease  Clearsigned file isn't valid, got 'NOSPLIT' (does the network require authentication?)
+E: The repository 'http://archive.ubuntu.com/ubuntu noble-updates InRelease' is no longer signed.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+N: See apt-secure(8) manpage for repository creation and user configuration details.
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/noble-backports/InRelease  Clearsigned file isn't valid, got 'NOSPLIT' (does the network require authentication?)
+E: The repository 'http://archive.ubuntu.com/ubuntu noble-backports InRelease' is no longer signed.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+N: See apt-secure(8) manpage for repository creation and user configuration details.
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+0 upgraded, 0 newly installed, 1 reinstalled, 0 to remove and 42 not upgraded.
+Need to get 159 kB of archives.
+After this operation, 0 B of additional disk space will be used.
+Get:1 http://phc.prontonetworks.com/redirect.html?URI=http://archive.ubuntu.com/ubuntu noble/main amd64 ca-certificates all 20240203 [159 kB]
+Ign:1 http://phc.prontonetworks.com/redirect.html?URI=http://archive.ubuntu.com/ubuntu noble/main amd64 ca-certificates all 20240203
+Err:1 http://archive.ubuntu.com/ubuntu noble/main amd64 ca-certificates all 20240203
+  File has unexpected size (331 != 159378). Mirror sync in progress? [IP: 172.16.1.1 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/c/ca-certificates/ca-certificates_20240203_all.deb  File has unexpected size (331 != 159378). Mirror sync in progress? [IP: 172.16.1.1 80]
+E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+Updating certificates in /etc/ssl/certs...
+0 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+Processing triggers for ca-certificates-java (20240118) ...
+done.
+done.
+anket@anket-deskdown:~/Music/SwiftServe$ npm install -D tsx typescript @types/node
+npm error code CERT_HAS_EXPIRED
+npm error errno CERT_HAS_EXPIRED
+npm error request to https://registry.npmjs.org/tsx failed, reason: certificate has expired
+npm error A complete log of this run can be found in: /home/anket/.npm/_logs/2025-09-19T16_24_19_008Z-debug-0.log
+anket@anket-deskdown:~/Music/SwiftServe$ ^[[200~rm -rf node_modules package-lock.json
+che clean --force
+^[[201~rm: command not found
+anket@anket-deskdown:~/Music/SwiftServe$ npm cache clean --force
+npm warn using --force Recommended protections disabled.
+anket@anket-deskdown:~/Music/SwiftServe$ ~npm install
+Command '~npm' not found, did you mean:
+  command 'npm' from deb npm (9.2.0~ds1-2)
+Try: sudo apt install <deb name>
+anket@anket-deskdown:~/Music/SwiftServe$ npm install
+npm error code ENOTEMPTY
+npm error syscall rename
+npm error path /home/anket/Music/SwiftServe/node_modules/body-parser
+npm error dest /home/anket/Music/SwiftServe/node_modules/.body-parser-SS1R6PuZ
+npm error errno -39
+npm error ENOTEMPTY: directory not empty, rename '/home/anket/Music/SwiftServe/node_modules/body-parser' -> '/home/anket/Music/SwiftServe/node_modules/.body-parser-SS1R6PuZ'
+npm error A complete log of this run can be found in: /home/anket/.npm/_logs/2025-09-19T16_28_36_383Z-debug-0.log
