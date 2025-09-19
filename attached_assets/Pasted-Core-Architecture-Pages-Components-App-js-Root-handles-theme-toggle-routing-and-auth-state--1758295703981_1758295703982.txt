@@ -1,0 +1,184 @@
+Core Architecture
+Pages / Components
+
+App.js – Root, handles theme toggle, routing, and auth state.
+
+Auth.js – Firebase login/logout with Google/GitHub.
+
+ChessGame.js – Main game component, handles:
+
+Multiplayer sync with Firestore
+
+Chess logic via chess.js
+
+Board UI via react-chessboard
+
+Bot fallback
+
+Move tracking and winner detection
+
+GameHistory.js – Displays all completed games from Firestore
+
+Filters by player or opponent type
+
+Shows stats: moves, duration, result
+
+Header.js / Navbar.js – Theme toggle and navigation tabs
+
+State Management
+
+Use React context or useState + useEffect for:
+
+Auth state
+
+Theme (day/night)
+
+Current game info
+
+Bot settings
+
+2. Firebase Setup
+
+Authentication
+
+Enable Google & GitHub OAuth
+
+Store minimal user info (UID, displayName, photoURL)
+
+Firestore Collections
+
+games – stores live and completed games:
+
+{
+  "fen": "current FEN",
+  "moves": ["e4", "e5", ...],
+  "players": { "white": uid, "black": uid | 'bot' },
+  "status": "active/completed",
+  "winner": "white/black/draw",
+  "duration": 120, // seconds
+  "difficulty": "easy/medium/hard",
+  "createdAt": timestamp
+}
+
+
+users (optional) – stats per user, like total wins/losses
+
+3. Multiplayer Logic
+
+Game creation
+
+When a player joins, check for open games:
+
+Assign as white if empty, else black
+
+If no available game, create new
+
+Move sync
+
+Use Firestore onSnapshot for real-time updates
+
+Validate moves with chess.js before writing
+
+Bot integration
+
+If playing solo, bot makes move after player
+
+Implement difficulty levels:
+
+Easy: random legal move
+
+Medium: prefer captures/checks, some randomness
+
+Hard: prioritize captures, checks, and center control
+
+4. Game Tracking & History
+
+Track:
+
+Moves array
+
+Move count
+
+Start and end time → compute duration
+
+Winner / draw
+
+On completion:
+
+Save game in games collection
+
+Mark status as completed
+
+History Component
+
+Fetch all completed games for the current user
+
+Show opponent type, result, duration, and move count
+
+Optional: filter by Bot difficulty
+
+5. UI/UX Enhancements
+
+Theme Toggle
+
+Store preference in localStorage
+
+Smooth CSS transitions with Tailwind or styled-components
+
+Navigation
+
+Tabs: Play / History
+
+Highlight active tab
+
+Game Indicators
+
+Show current turn, check, checkmate, draw
+
+Use icons/colors for clarity
+
+Responsive Layout
+
+Flexbox/Grid for mobile and desktop
+
+Chessboard scales with viewport
+
+6. Suggested Packages
+
+firebase – Auth & Firestore
+
+chess.js – Legal moves and game logic
+
+react-chessboard – Interactive board
+
+@heroicons/react – Icons for theme, indicators, and UI
+
+Optional: date-fns – Format game timestamps
+
+7. Optional Improvements
+
+Notifications
+
+Show toast when opponent moves
+
+Undo / Analysis
+
+For solo bot games, show best move suggestions
+
+Leaderboards
+
+Track wins against bots and real players
+
+If you want, I can write a full file structure and starter code that includes:
+
+Auth
+
+Multiplayer chessboard with bot fallback
+
+Theme toggle
+
+History page
+
+Bot difficulty selector
+
+This would be a ready-to-run React + Firebase project
