@@ -117,6 +117,8 @@ export function GameProvider({ children }: GameProviderProps) {
       status: "active",
       difficulty: mode === "bot" ? difficulty : null,
       currentTurn: "white",
+      duration: null,
+      winner: null,
     });
 
     setGameData(gameData);

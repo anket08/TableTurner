@@ -1,5 +1,16 @@
 import { z } from "zod";
 
+// User-related schemas
+export const userSchema = z.object({
+  id: z.string(),
+  username: z.string(),
+  email: z.string().email(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+
+export const insertUserSchema = userSchema.omit({ id: true, createdAt: true, updatedAt: true });
+
 // Game-related schemas
 export const gameSchema = z.object({
   id: z.string(),
@@ -54,6 +65,8 @@ export const moveSchema = z.object({
   san: z.string(), // Standard algebraic notation
 });
 
+export type User = z.infer<typeof userSchema>;
+export type InsertUser = z.infer<typeof insertUserSchema>;
 export type Game = z.infer<typeof gameSchema>;
 export type InsertGame = z.infer<typeof insertGameSchema>;
 export type UserStats = z.infer<typeof userStatsSchema>;

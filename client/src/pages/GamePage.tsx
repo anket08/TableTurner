@@ -7,7 +7,6 @@ import ChessBoard from "@/components/Chess/ChessBoard";
 import PlayerCard from "@/components/PlayerCard";
 import MoveHistory from "@/components/MoveHistory";
 import GameSettings from "@/components/GameSettings";
-import { formatTime } from "date-fns";
 
 export default function GamePage() {
   const { user } = useAuth();

@@ -40,7 +40,7 @@ export default function ChessBoard() {
           position={game.fen()}
           onPieceDrop={onDrop}
           boardOrientation={boardOrientation}
-          areCustomPremovesAllowed={false}
+          arePremovesAllowed={false}
           boardWidth={400}
           customBoardStyle={{
             borderRadius: "8px",
