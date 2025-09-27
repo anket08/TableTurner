@@ -3,7 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useGame } from "@/contexts/GameContext";
 import { BotDifficulty } from "@shared/schema";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { Loader as Loader2 } from "lucide-react";
 
 export default function GameSettings() {
   const { 

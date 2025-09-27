@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { gameService } from "@/services/gameService";
 import { Card, CardContent } from "@/components/ui/card";
-import { BarChart3, Trophy, XCircle, TrendingUp } from "lucide-react";
+import { ChartBar as BarChart3, Trophy, Circle as XCircle, TrendingUp } from "lucide-react";
 
 export default function GameStats() {
   const { user } = useAuth();

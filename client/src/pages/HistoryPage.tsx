@@ -7,7 +7,7 @@ import { formatDistanceToNow } from "date-fns";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { Trophy, XCircle, Minus, Eye } from "lucide-react";
+import { Trophy, Circle as XCircle, Minus, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import GameStats from "@/components/GameStats";
 
