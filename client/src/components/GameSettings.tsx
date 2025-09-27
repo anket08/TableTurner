@@ -2,9 +2,19 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useGame } from "@/contexts/GameContext";
 import { BotDifficulty } from "@shared/schema";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 export default function GameSettings() {
-  const { gameMode, botDifficulty, setGameMode, setBotDifficulty } = useGame();
+  const { 
+    gameMode, 
+    botDifficulty, 
+    setGameMode, 
+    setBotDifficulty, 
+    createNewGame,
+    isLoading,
+    gameStatus 
+  } = useGame();
 
   const handleGameModeChange = (value: string) => {
     setGameMode(value as "multiplayer" | "bot");
@@ -14,9 +24,13 @@ export default function GameSettings() {
     setBotDifficulty(value as BotDifficulty);
   };
 
+  const handleStartGame = () => {
+    createNewGame(gameMode, botDifficulty);
+  };
+
   return (
     <div className="bg-card rounded-xl border border-border p-6" data-testid="game-settings">
-      <h3 className="text-lg font-semibold mb-4">Game Mode</h3>
+      <h3 className="text-lg font-semibold mb-4">Game Settings</h3>
       
       <div className="space-y-4">
         {/* Game Type */}
@@ -54,22 +68,28 @@ export default function GameSettings() {
           </div>
         )}
 
-        {/* Color Preference */}
-        <div className="flex items-center justify-between">
-          <Label htmlFor="color-preference" className="text-sm font-medium">
-            Play as
-          </Label>
-          <Select defaultValue="random">
-            <SelectTrigger className="w-32" id="color-preference" data-testid="select-color-preference">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="white">White</SelectItem>
-              <SelectItem value="black">Black</SelectItem>
-              <SelectItem value="random">Random</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        {/* Start Game Button */}
+        <Button 
+          onClick={handleStartGame}
+          disabled={isLoading}
+          className="w-full"
+          data-testid="button-start-game"
+        >
+          {isLoading ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Creating Game...
+            </>
+          ) : (
+            `Start ${gameMode === "bot" ? `${botDifficulty} Bot` : "Multiplayer"} Game`
+          )}
+        </Button>
+        
+        {gameMode === "multiplayer" && gameStatus === "waiting" && (
+          <p className="text-xs text-muted-foreground text-center">
+            Searching for an opponent...
+          </p>
+        )}
       </div>
     </div>
   );

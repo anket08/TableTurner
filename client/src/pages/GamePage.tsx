@@ -3,6 +3,7 @@ import { useGame } from "@/contexts/GameContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Loader2 } from "lucide-react";
 import ChessBoard from "@/components/Chess/ChessBoard";
 import PlayerCard from "@/components/PlayerCard";
 import MoveHistory from "@/components/MoveHistory";
@@ -18,18 +19,12 @@ export default function GamePage() {
     botDifficulty,
     isPlayerTurn,
     gameTimer,
+    isLoading,
     createNewGame,
     resignGame,
     offerDraw,
     game,
   } = useGame();
-
-  useEffect(() => {
-    // Auto-create a new game if none exists
-    if (!gameData && user) {
-      createNewGame("bot", "medium");
-    }
-  }, [gameData, user, createNewGame]);
 
   const formatGameTimer = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -38,7 +33,9 @@ export default function GamePage() {
   };
 
   const getGameStatusText = () => {
-    if (gameStatus === "waiting") return "Setting up game...";
+    if (gameStatus === "waiting") {
+      return gameMode === "multiplayer" ? "Waiting for opponent..." : "Setting up game...";
+    }
     if (gameStatus === "completed") {
       if (!gameData?.winner) return "Game completed";
       if (gameData.winner === "draw") return "Game drawn";
@@ -59,8 +56,26 @@ export default function GamePage() {
     return isPlayerTurn ? "default" : "secondary";
   };
 
-  const opponentName = gameMode === "bot" ? "Chess Bot" : "Opponent";
+  const getOpponentName = () => {
+    if (gameMode === "bot") return "Chess Bot";
+    if (gameStatus === "waiting") return "Waiting...";
+    return "Opponent";
+  };
+  
   const opponentColor = playerColor === "white" ? "black" : "white";
+
+  if (isLoading) {
+    return (
+      <main className="container mx-auto px-4 py-6" data-testid="game-page">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4" />
+            <p className="text-muted-foreground">Setting up your game...</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="container mx-auto px-4 py-6" data-testid="game-page">
@@ -73,7 +88,7 @@ export default function GamePage() {
               <div className="flex items-center space-x-4">
                 <Badge 
                   variant={getGameStatusVariant() as any}
-                  className="animate-pulse"
+                  className={gameStatus === "active" && isPlayerTurn ? "animate-pulse" : ""}
                   data-testid="badge-game-status"
                 >
                   {getGameStatusText()}
@@ -93,74 +108,111 @@ export default function GamePage() {
               </div>
             </div>
 
-            {/* Chess Board */}
-            <ChessBoard />
+            {/* Chess Board - only show if game exists */}
+            {gameData ? (
+              <ChessBoard />
+            ) : (
+              <div className="aspect-square max-w-lg mx-auto bg-muted rounded-xl flex items-center justify-center">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mx-auto mb-4">
+                    <span className="text-primary-foreground font-bold text-3xl">♕</span>
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">Ready to Play?</h3>
+                  <p className="text-muted-foreground mb-4">Start a new game to begin playing chess</p>
+                  <Button
+                    onClick={() => createNewGame(gameMode, botDifficulty)}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Creating Game...
+                      </>
+                    ) : (
+                      "Start New Game"
+                    )}
+                  </Button>
+                </div>
+              </div>
+            )}
 
             {/* Game Actions */}
-            <div className="flex items-center justify-between mt-6">
-              <div className="flex items-center space-x-2">
+            {gameData && (
+              <div className="flex items-center justify-between mt-6">
+                <div className="flex items-center space-x-2">
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={resignGame}
+                    disabled={gameStatus !== "active" || isLoading}
+                    data-testid="button-resign"
+                  >
+                    Resign
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={offerDraw}
+                    disabled={gameStatus !== "active" || isLoading}
+                    data-testid="button-draw"
+                  >
+                    Offer Draw
+                  </Button>
+                </div>
+                
                 <Button
-                  variant="destructive"
+                  onClick={() => createNewGame(gameMode, botDifficulty)}
                   size="sm"
-                  onClick={resignGame}
-                  disabled={gameStatus !== "active"}
-                  data-testid="button-resign"
+                  disabled={isLoading}
+                  data-testid="button-new-game"
                 >
-                  Resign
-                </Button>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={offerDraw}
-                  disabled={gameStatus !== "active"}
-                  data-testid="button-draw"
-                >
-                  Offer Draw
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Creating...
+                    </>
+                  ) : (
+                    "New Game"
+                  )}
                 </Button>
               </div>
-              
-              <Button
-                onClick={() => createNewGame(gameMode, botDifficulty)}
-                size="sm"
-                data-testid="button-new-game"
-              >
-                New Game
-              </Button>
-            </div>
+            )}
           </div>
         </div>
 
         {/* Game Info & Settings Sidebar */}
         <div className="space-y-6">
           {/* Players Info */}
-          <div className="bg-card rounded-xl border border-border p-6" data-testid="players-info">
-            <h3 className="text-lg font-semibold mb-4">Players</h3>
-            
-            {/* Opponent */}
-            <div className="mb-4">
+          {gameData && (
+            <div className="bg-card rounded-xl border border-border p-6" data-testid="players-info">
+              <h3 className="text-lg font-semibold mb-4">Players</h3>
+              
+              {/* Opponent */}
+              <div className="mb-4">
+                <PlayerCard
+                  name={getOpponentName()}
+                  isBot={gameMode === "bot"}
+                  color={opponentColor}
+                  difficulty={gameMode === "bot" ? botDifficulty : undefined}
+                  isCurrentPlayer={gameStatus === "active" && !isPlayerTurn}
+                />
+              </div>
+
+              {/* Current User */}
               <PlayerCard
-                name={opponentName}
-                isBot={gameMode === "bot"}
-                color={opponentColor}
-                difficulty={gameMode === "bot" ? botDifficulty : undefined}
-                isCurrentPlayer={gameStatus === "active" && !isPlayerTurn}
+                name={user?.displayName || "You"}
+                avatar={user?.photoURL || undefined}
+                color={playerColor}
+                isCurrentPlayer={gameStatus === "active" && isPlayerTurn}
               />
             </div>
-
-            {/* Current User */}
-            <PlayerCard
-              name={user?.displayName || "You"}
-              avatar={user?.photoURL || undefined}
-              color={playerColor}
-              isCurrentPlayer={gameStatus === "active" && isPlayerTurn}
-            />
-          </div>
+          )}
 
           {/* Game Settings */}
           <GameSettings />
 
           {/* Move History */}
-          <MoveHistory />
+          {gameData && <MoveHistory />}
         </div>
       </div>
     </main>

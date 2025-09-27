@@ -11,6 +11,7 @@ export default function GameStats() {
     queryKey: ["userStats", user?.uid],
     queryFn: () => user ? gameService.getUserStats(user.uid) : null,
     enabled: !!user,
+    refetchInterval: 30000, // Refetch every 30 seconds
   });
 
   if (isLoading) {
@@ -28,7 +29,18 @@ export default function GameStats() {
   }
 
   if (!stats) {
-    return null;
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <Card>
+          <CardContent className="p-6">
+            <div className="text-center text-muted-foreground">
+              <BarChart3 className="w-8 h-8 mx-auto mb-2" />
+              <p className="text-sm">Play your first game to see stats!</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   const statCards = [
@@ -82,6 +94,11 @@ export default function GameStats() {
                 >
                   {stat.value}
                 </p>
+                {stat.title === "Win Rate" && stats.totalGames > 0 && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {stats.draws} draws
+                  </p>
+                )}
               </div>
               <div className={`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center`}>
                 <stat.icon className={`w-6 h-6 ${stat.color}`} />

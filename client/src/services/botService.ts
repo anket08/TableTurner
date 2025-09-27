@@ -31,6 +31,17 @@ class BotService {
       return tempChess.isCheck();
     });
 
+    // Prioritize checkmate
+    const checkmates = moves.filter(move => {
+      const tempChess = new Chess(chess.fen());
+      tempChess.move(move);
+      return tempChess.isCheckmate();
+    });
+
+    if (checkmates.length > 0) {
+      return checkmates[0];
+    }
+
     // 60% chance to play capture or check if available
     if ((captures.length > 0 || checks.length > 0) && Math.random() < 0.6) {
       const priorityMoves = [...captures, ...checks];
@@ -68,7 +79,9 @@ class BotService {
   private evaluateMove(chess: Chess, move: Move): number {
     let score = 0;
     const tempChess = new Chess(chess.fen());
-    tempChess.move(move);
+    const moveResult = tempChess.move(move);
+    
+    if (!moveResult) return -1000; // Invalid move
 
     // Capture value
     if (move.captured) {
@@ -86,6 +99,11 @@ class BotService {
       score += 1000;
     }
 
+    // Avoid stalemate
+    if (tempChess.isStalemate()) {
+      score -= 500;
+    }
+
     // Center control
     const centerSquares = ['d4', 'd5', 'e4', 'e5'];
     if (centerSquares.includes(move.to)) {
@@ -99,8 +117,21 @@ class BotService {
       score += 3;
     }
 
+    // Castle bonus
+    if (move.flags.includes('k') || move.flags.includes('q')) {
+      score += 5;
+    }
+
+    // Avoid moving into attack
+    const attackers = tempChess.attackers(move.to, chess.turn() === 'w' ? 'b' : 'w');
+    if (attackers.length > 0) {
+      const pieceValues = { p: 1, n: 3, b: 3, r: 5, q: 9, k: 100 };
+      const pieceValue = pieceValues[move.piece as keyof typeof pieceValues] || 0;
+      score -= pieceValue * 2;
+    }
+
     // Avoid moving the same piece twice in opening
-    if (chess.moveNumber() < 10) {
+    if (chess.moveNumber() <= 10) {
       const history = chess.history({ verbose: true });
       const recentMoves = history.slice(-4);
       const pieceMovedRecently = recentMoves.some(

@@ -22,6 +22,7 @@ export default function HistoryPage() {
     queryKey: ["userGames", user?.uid],
     queryFn: () => user ? gameService.getUserGames(user.uid) : [],
     enabled: !!user,
+    refetchInterval: 30000, // Refetch every 30 seconds
   });
 
   const filteredGames = games.filter((game) => {
@@ -94,6 +95,11 @@ export default function HistoryPage() {
     return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
   };
 
+  const getUserColor = (game: Game) => {
+    if (!user) return "Unknown";
+    return game.players.white === user.uid ? "White" : "Black";
+  };
+
   if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-6">
@@ -111,6 +117,13 @@ export default function HistoryPage() {
 
   return (
     <div className="container mx-auto px-4 py-6" data-testid="history-page">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold">Game History</h1>
+        <p className="text-muted-foreground mt-2">
+          Track your chess games and analyze your performance
+        </p>
+      </div>
+      
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Statistics Cards */}
         <div className="lg:col-span-4">
@@ -190,6 +203,21 @@ export default function HistoryPage() {
                     </SelectContent>
                   </Select>
                 </div>
+                
+                {/* Clear Filters */}
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full"
+                  onClick={() => {
+                    setOpponentFilter("all");
+                    setResultFilter("all");
+                    setDifficultyFilter("all");
+                    setTimeFilter("all");
+                  }}
+                >
+                  Clear Filters
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -209,7 +237,29 @@ export default function HistoryPage() {
               <div className="divide-y divide-border">
                 {filteredGames.length === 0 ? (
                   <div className="p-8 text-center text-muted-foreground">
-                    No games match your filters
+                    {games.length === 0 ? (
+                      <div>
+                        <Trophy className="w-12 h-12 mx-auto mb-4 text-muted-foreground/50" />
+                        <h3 className="text-lg font-semibold mb-2">No Games Yet</h3>
+                        <p>Start playing to see your game history here!</p>
+                      </div>
+                    ) : (
+                      <div>
+                        <p>No games match your current filters.</p>
+                        <Button 
+                          variant="link" 
+                          size="sm"
+                          onClick={() => {
+                            setOpponentFilter("all");
+                            setResultFilter("all");
+                            setDifficultyFilter("all");
+                            setTimeFilter("all");
+                          }}
+                        >
+                          Clear filters to see all games
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   filteredGames.map((game) => (
@@ -234,6 +284,9 @@ export default function HistoryPage() {
                               <span className="text-sm" data-testid={`text-opponent-${game.id}`}>
                                 {game.difficulty ? `Chess Bot (${game.difficulty})` : "Human Player"}
                               </span>
+                              <span className="text-xs text-muted-foreground">
+                                • Played as {getUserColor(game)}
+                              </span>
                             </div>
                             <div className="flex items-center space-x-4 mt-1 text-sm text-muted-foreground">
                               <span data-testid={`text-moves-${game.id}`}>
@@ -254,6 +307,8 @@ export default function HistoryPage() {
                             variant="ghost" 
                             size="sm"
                             data-testid={`button-view-${game.id}`}
+                            disabled
+                            title="Game analysis coming soon"
                           >
                             <Eye className="w-4 h-4" />
                           </Button>
@@ -264,12 +319,18 @@ export default function HistoryPage() {
                 )}
               </div>
 
-              {/* Pagination placeholder */}
-              {filteredGames.length > 0 && (
+              {/* Footer */}
+              {games.length > 0 && (
                 <div className="p-6 border-t border-border">
                   <div className="flex items-center justify-between">
                     <div className="text-sm text-muted-foreground">
-                      Showing {filteredGames.length} games
+                      {filteredGames.length === games.length 
+                        ? `Showing all ${games.length} games`
+                        : `Showing ${filteredGames.length} of ${games.length} games`
+                      }
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      Updates automatically
                     </div>
                   </div>
                 </div>

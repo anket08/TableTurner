@@ -46,19 +46,21 @@ export default function PlayerCard({
           <div className="font-medium text-sm" data-testid={`text-player-name-${color}`}>
             {name}
           </div>
-          <div className="text-xs text-muted-foreground">
-            {isBot && difficulty ? difficulty : isCurrentPlayer ? "You" : "Opponent"}
+          <div className="text-xs text-muted-foreground capitalize">
+            {isBot && difficulty ? `${difficulty} Bot` : color}
           </div>
         </div>
       </div>
-      <div className="text-lg" data-testid={`text-piece-icon-${color}`}>
-        {pieceIcon}
+      <div className="flex items-center space-x-2">
+        <div className="text-lg" data-testid={`text-piece-icon-${color}`}>
+          {pieceIcon}
+        </div>
+        {isCurrentPlayer && (
+          <Badge variant="secondary" className="text-xs" data-testid={`badge-current-turn-${color}`}>
+            Turn
+          </Badge>
+        )}
       </div>
-      {isCurrentPlayer && (
-        <Badge variant="secondary" className="ml-2" data-testid={`badge-current-turn-${color}`}>
-          Your Turn
-        </Badge>
-      )}
     </div>
   );
 }
